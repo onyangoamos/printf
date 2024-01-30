@@ -66,7 +66,7 @@ int print_pointer(va_list types, char buffer[],
 int print_non_printable(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	int i = 0, offset = 0;
+	int k = 0, offset = 0;
 	char *str = va_arg(types, char *);
 
 	UNUSED(flags);
@@ -77,19 +77,19 @@ int print_non_printable(va_list types, char buffer[],
 	if (str == NULL)
 		return (write(1, "(null)", 6));
 
-	while (str[i] != '\0')
+	while (str[k] != '\0')
 	{
 		if (is_printable(str[i]))
-			buffer[i + offset] = str[i];
+			buffer[k + offset] = str[k];
 		else
-			offset += append_hexa_code(str[i], buffer, i + offset);
+			offset += append_hexa_code(str[k], buffer, k + offset);
 
-		i++;
+		k++;
 	}
 
-	buffer[i + offset] = '\0';
+	buffer[k + offset] = '\0';
 
-	return (write(1, buffer, i + offset));
+	return (write(1, buffer, k + offset));
 }
 
 /************************* PRINT REVERSE *************************/
@@ -108,7 +108,7 @@ int print_reverse(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	char *str;
-	int i, count = 0;
+	int k, count = 0;
 
 	UNUSED(buffer);
 	UNUSED(flags);
@@ -123,12 +123,12 @@ int print_reverse(va_list types, char buffer[],
 
 		str = ")Null(";
 	}
-	for (i = 0; str[i]; i++)
+	for (k = 0; str[k]; k++)
 		;
 
-	for (i = i - 1; i >= 0; i--)
+	for (k = k - 1; k >= 0; k--)
 	{
-		char z = str[i];
+		char z = str[k];
 
 		write(1, &z, 1);
 		count++;
@@ -151,7 +151,7 @@ int print_rot13string(va_list types, char buffer[],
 {
 	char x;
 	char *str;
-	unsigned int i, j;
+	unsigned int k, g;
 	int count = 0;
 	char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
@@ -165,21 +165,21 @@ int print_rot13string(va_list types, char buffer[],
 
 	if (str == NULL)
 		str = "(AHYY)";
-	for (i = 0; str[i]; i++)
+	for (k = 0; str[k]; k++)
 	{
-		for (j = 0; in[j]; j++)
+		for (g = 0; in[g]; g++)
 		{
-			if (in[j] == str[i])
+			if (in[g] == str[k])
 			{
-				x = out[j];
+				x = out[g];
 				write(1, &x, 1);
 				count++;
 				break;
 			}
 		}
-		if (!in[j])
+		if (!in[g])
 		{
-			x = str[i];
+			x = str[k];
 			write(1, &x, 1);
 			count++;
 		}
